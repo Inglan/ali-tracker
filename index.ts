@@ -1,18 +1,19 @@
 const socket = new WebSocket("wss://ws.alimad.co/socket");
 import { appendFile } from "node:fs/promises";
 
+// This was AI generated, thanks gpt-5
 type ActivitySample = {
   type: "sample";
   data?: {
     device: string;
     app: string;
     title: string;
-    ramPercent: number; // 0–1
-    cpuPercent: number; // 0–1
-    wifi: string | null; // SSID; null if not connected/unknown
+    ramPercent: number;
+    cpuPercent: number;
+    wifi: string | null;
     isIdle: boolean;
     isSleeping: boolean;
-    ip: string; // e.g., "192.168.10.9"
+    ip: string;
   };
 };
 
