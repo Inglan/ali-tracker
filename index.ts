@@ -1,5 +1,10 @@
 const socket = new WebSocket("wss://ws.alimad.co/socket");
 import { appendFile } from "node:fs/promises";
+import { OpenRouter } from "@openrouter/sdk";
+
+const openRouter = new OpenRouter({
+  apiKey: process.env.OPENROUTER_API_KEY,
+});
 
 // This was AI generated, thanks gpt-5
 type MetaFlags = {
@@ -51,7 +56,29 @@ socket.addEventListener("message", async (event) => {
   if (message.type == "sample") {
     if (message.data?.title !== currentWindowTitle) {
       currentWindowTitle = message.data?.title || "";
-      console.log("window title changed to:", currentWindowTitle);
+      const openRouterResponse = await openRouter.chat
+        // @ts-ignore
+        .send({
+          messages: [
+            {
+              role: "system",
+              content: `You are a model built to identify sensitive data from window titles. You will respond with no, if there is no sensitive data in the title. You will not respond with anything else.]
+            If there is sensitive data, or there could be on the screen, you will respond with a justification.
+            Sensetive data includes:
+             - Credentials
+             - Private messages on platforms such as discord, whatsapp, and slack
+             - Other personal information`,
+            },
+            {
+              role: "user",
+              content: currentWindowTitle,
+            },
+          ],
+          model: "openai/gpt-oss-20b",
+          stream: false,
+          provider: "groq",
+        });
+      console.log(openRouterResponse.choices[0]?.message.content);
     }
   }
 });
