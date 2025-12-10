@@ -21,9 +21,6 @@ socket.addEventListener("message", async (event) => {
   const message = JSON.parse(event.data) as ActivitySample;
 
   if (message.type == "sample") {
-    await appendFile(
-      "log.csv",
-      `${message.data?.device},${message.data?.app},${message.data?.title},${message.data?.ramPercent},${message.data?.cpuPercent},${message.data?.wifi},${message.data?.isIdle},${message.data?.isSleeping},${message.data?.ip}\n`,
-    );
+    console.log(message.data);
   }
 });
