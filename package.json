@@ -8,5 +8,8 @@
     "typescript": "^5"
   },
   "private": true,
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "@openrouter/sdk": "^0.2.9"
+  }
 }
