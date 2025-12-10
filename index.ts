@@ -43,10 +43,15 @@ export interface ActivitySample {
 }
 // End ai generated part
 
+let currentWindowTitle = "";
+
 socket.addEventListener("message", async (event) => {
   const message = JSON.parse(event.data) as ActivitySample;
 
   if (message.type == "sample") {
-    console.log(message.data);
+    if (message.data?.title !== currentWindowTitle) {
+      currentWindowTitle = message.data?.title || "";
+      console.log("window title changed to:", currentWindowTitle);
+    }
   }
 });
