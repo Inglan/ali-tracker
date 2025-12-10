@@ -80,6 +80,9 @@ socket.addEventListener("message", async (event) => {
         });
       if (openRouterResponse.choices[0]?.message.content != "no") {
         console.log(openRouterResponse.choices[0]?.message.content);
+        socket.send(
+          JSON.stringify({ type: "request", device: message.data?.device }),
+        );
       }
     }
   }
