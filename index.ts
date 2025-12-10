@@ -66,7 +66,7 @@ socket.addEventListener("message", async (event) => {
             If there is sensitive data, or there could be on the screen, you will respond with a breif justification.
             Sensetive data includes:
              - Credentials
-             - Private messages on platforms such as discord, whatsapp, and slack
+             - Messages on platforms such as discord, whatsapp, and slack
              - Other personal information`,
             },
             {
@@ -78,7 +78,9 @@ socket.addEventListener("message", async (event) => {
           stream: false,
           provider: "groq",
         });
-      console.log(openRouterResponse.choices[0]?.message.content);
+      if (openRouterResponse.choices[0]?.message.content != "no") {
+        console.log(openRouterResponse.choices[0]?.message.content);
+      }
     }
   }
 });
