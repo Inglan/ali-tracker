@@ -2,20 +2,46 @@ const socket = new WebSocket("wss://ws.alimad.co/socket");
 import { appendFile } from "node:fs/promises";
 
 // This was AI generated, thanks gpt-5
-type ActivitySample = {
-  type: "sample";
+type MetaFlags = {
+  slack: boolean;
+  discord: boolean;
+  "whatsapp.root": boolean;
+  code: boolean;
+  chrome: boolean;
+  windowsterminal: boolean;
+};
+
+export interface ActivitySample {
+  type: string;
   data?: {
-    device: string;
+    device: string; // e.g., "ALIMAD-PC"
     app: string;
     title: string;
-    ramPercent: number;
-    cpuPercent: number;
-    wifi: string | null;
+    ramPercent: number; // 0..1 if it's a fraction; rename to ramUsage if 0..100 later
+    cpuPercent: number; // same note as above
+    batteryPercent: number; // 0..100
+    wifi: string | null; // SSID; null if disconnected
     isIdle: boolean;
+
+    meta: MetaFlags;
+
+    fullscreen: boolean;
+    splitLeft: boolean;
+    splitRight: boolean;
+
+    keys: string; // raw key sequence if any
+    keysPressed: number;
+    mouseClicks: number;
+
     isSleeping: boolean;
-    ip: string;
+
+    localIp: string; // IPv4 string
+    ip: string; // public IPv4/IPv6 string
+
+    timestamp: string; // ISO 8601
   };
-};
+}
+// End ai generated part
 
 socket.addEventListener("message", async (event) => {
   const message = JSON.parse(event.data) as ActivitySample;
