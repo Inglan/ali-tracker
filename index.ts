@@ -63,7 +63,7 @@ socket.addEventListener("message", async (event) => {
             {
               role: "system",
               content: `You are a model built to identify sensitive data from window titles. You will respond with no, if there is no sensitive data in the title. You will not respond with anything else.]
-            If there is sensitive data, or there could be on the screen, you will respond with a justification.
+            If there is sensitive data, or there could be on the screen, you will respond with a breif justification.
             Sensetive data includes:
              - Credentials
              - Private messages on platforms such as discord, whatsapp, and slack
