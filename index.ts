@@ -1,5 +1,5 @@
 const socket = new WebSocket("wss://ws.alimad.co/socket");
-import { appendFile } from "node:fs/promises";
+import { appendFile, writeFile } from "node:fs/promises";
 import { OpenRouter } from "@openrouter/sdk";
 
 const openRouter = new OpenRouter({
@@ -53,6 +53,17 @@ let currentWindowTitle = "";
 socket.addEventListener("message", async (event) => {
   const message = JSON.parse(event.data) as ActivitySample;
 
+  if (message.type == "screenshot") {
+    // @ts-ignore
+    const res = await fetch(message.data);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+    const arrayBuffer = await res.arrayBuffer();
+    // @ts-ignore
+    await writeFile(message.timestamp + ".png", Buffer.from(arrayBuffer));
+
+    console.log("Downloaded");
+  }
   if (message.type == "sample") {
     if (message.data?.title !== currentWindowTitle) {
       currentWindowTitle = message.data?.title || "";
