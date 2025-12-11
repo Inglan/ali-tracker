@@ -62,8 +62,8 @@ socket.addEventListener("message", async (event) => {
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
     const arrayBuffer = await res.arrayBuffer();
-    // @ts-ignore
     await writeFile(
+      // @ts-ignore
       "./screenshots/" + message.timestamp + ".png",
       Buffer.from(arrayBuffer),
     );
