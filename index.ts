@@ -1,6 +1,9 @@
 const socket = new WebSocket("wss://ws.alimad.co/socket");
-import { appendFile, writeFile } from "node:fs/promises";
+import { appendFile, writeFile, mkdir } from "node:fs/promises";
 import { OpenRouter } from "@openrouter/sdk";
+
+mkdir("./screenshots", { recursive: true });
+mkdir("./justifications", { recursive: true });
 
 const openRouter = new OpenRouter({
   apiKey: process.env.OPENROUTER_API_KEY,
@@ -60,7 +63,10 @@ socket.addEventListener("message", async (event) => {
 
     const arrayBuffer = await res.arrayBuffer();
     // @ts-ignore
-    await writeFile(message.timestamp + ".png", Buffer.from(arrayBuffer));
+    await writeFile(
+      "./screenshots/" + message.timestamp + ".png",
+      Buffer.from(arrayBuffer),
+    );
 
     console.log("Downloaded");
   }
@@ -95,7 +101,7 @@ socket.addEventListener("message", async (event) => {
           JSON.stringify({ type: "request", device: message.data?.device }),
         );
         await writeFile(
-          new Date() + ".txt",
+          "./justifications/" + new Date() + ".txt",
           openRouterResponse.choices[0]?.message.content?.toString() || "",
         );
       }
