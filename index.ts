@@ -94,6 +94,10 @@ socket.addEventListener("message", async (event) => {
         socket.send(
           JSON.stringify({ type: "request", device: message.data?.device }),
         );
+        await writeFile(
+          new Date() + ".txt",
+          openRouterResponse.choices[0]?.message.content?.toString() || "",
+        );
       }
     }
   }
